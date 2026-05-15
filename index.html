@@ -24,7 +24,33 @@
       --purple: #7d3c98;
       --orange: #d35400;
       --teal: #1a8a7a;
+      /* Team colours */
+      --t1: #2980b9; --t1-dim: #1a5a8a; --t1-glow: rgba(41,128,185,.3); --t1-bg: rgba(41,128,185,.07);
+      --t2: #c0392b; --t2-dim: #8a1a1a; --t2-glow: rgba(192,57,43,.3);  --t2-bg: rgba(192,57,43,.07);
     }
+    /* Team-coloured player sections */
+    .player-section-t1 { border-left: 4px solid var(--t1) !important; background: linear-gradient(135deg, rgba(41,128,185,.06) 0%, transparent 60%); }
+    .player-section-t2 { border-left: 4px solid var(--t2) !important; background: linear-gradient(135deg, rgba(192,57,43,.06) 0%, transparent 60%); }
+    .team-badge-1 { background:rgba(41,128,185,.15); color:#6ab4e8; border:1px solid var(--t1); font-family:'Cinzel',serif; font-size:.65em; letter-spacing:1px; padding:2px 8px; border-radius:10px; }
+    .team-badge-2 { background:rgba(192,57,43,.15); color:#e87a6a; border:1px solid var(--t2); font-family:'Cinzel',serif; font-size:.65em; letter-spacing:1px; padding:2px 8px; border-radius:10px; }
+    .player-header-t1 h2 { color:#6ab4e8; text-shadow: 0 0 12px rgba(41,128,185,.4); }
+    .player-header-t2 h2 { color:#e87a6a; text-shadow: 0 0 12px rgba(192,57,43,.4); }
+    /* Setup team colour strips */
+    .setup-player-card.team-1 .setup-player-header { border-left: 3px solid var(--t1); }
+    .setup-player-card.team-2 .setup-player-header { border-left: 3px solid var(--t2); }
+    /* Collapsible player panels */
+    .player-section { border:1px solid rgba(139,111,71,.3); border-radius:6px; margin-bottom:16px; overflow:hidden; }
+    .player-section-header {
+      display:flex; align-items:center; justify-content:space-between;
+      padding:12px 16px; cursor:pointer; user-select:none;
+      background:rgba(0,0,0,.18); transition:background .2s;
+    }
+    .player-section-header:hover { background:rgba(0,0,0,.28); }
+    .player-section-body { padding:12px 14px 14px; }
+    .player-collapse-icon { font-size:.8em; color:var(--gold-dim); transition:transform .25s; }
+    .player-section.collapsed .player-collapse-icon { transform:rotate(-90deg); }
+    .player-section.collapsed .player-section-body { display:none; }
+    .player-active-strip { height:3px; }
     *{box-sizing:border-box;margin:0;padding:0}
     body{
       font-family:'Quattrocento',serif;
@@ -167,6 +193,15 @@
     .unit-badge-unit{background:rgba(39,174,96,.15);color:#5dbe86;border-color:#27ae60;}
     .unit-badge-vehicle{background:rgba(41,128,185,.15);color:#6ab0d8;border-color:#2980b9;}
     .unit-badge-stationary{background:rgba(125,60,152,.15);color:#b07dd8;border-color:#7d3c98;}
+    .unit-badge-squad{background:rgba(26,138,122,.15);color:#5dd8c8;border-color:#1a8a7a;}
+    .squad-members-wrap{margin-top:8px;display:flex;flex-direction:column;gap:5px;}
+    .squad-member-row{display:flex;align-items:center;gap:8px;background:rgba(0,0,0,.25);border:1px solid rgba(139,111,71,.2);border-radius:3px;padding:6px 10px;}
+    .squad-member-row.member-dead{opacity:.4;text-decoration:line-through;}
+    .squad-member-name{font-size:.85em;min-width:90px;color:var(--text-dim);}
+    .squad-member-hp{font-size:.82em;color:var(--gold-dim);min-width:60px;text-align:right;}
+    .squad-member-bar-wrap{flex:1;height:5px;background:rgba(0,0,0,.4);border-radius:3px;overflow:hidden;}
+    .squad-member-bar{height:100%;border-radius:3px;transition:width .3s;}
+    .btn-kill-member{padding:2px 8px;font-size:.72em;background:linear-gradient(135deg,#5c2020,#3d1414);border-color:#c0392b;border-width:1px;white-space:nowrap;}
     .hp-bar-wrap{height:6px;background:#1a1008;border-radius:3px;margin:6px 0;overflow:hidden;}
     .hp-bar{height:100%;border-radius:3px;transition:width .4s ease;}
     .status-tag{display:inline-block;margin:2px 3px;padding:2px 7px;border-radius:10px;font-size:.78em;
@@ -191,6 +226,25 @@
     .btn-damage:hover{background:linear-gradient(135deg,#5a2814,#3e180a);}
     .btn-revive{background:linear-gradient(135deg,#6d6438,#5a5330);}
     .btn-resurrect{background:linear-gradient(135deg,#5a3850,#4a3040);}
+    .btn-stack{background:linear-gradient(135deg,#2a4a3a,#1a3328);border-color:#2ecc71;}
+    .btn-stack:hover{background:linear-gradient(135deg,#336050,#22443a);}
+    .stack-tracker-wrap{margin-top:8px;display:flex;flex-direction:column;gap:6px;}
+    .stack-tracker-row{
+      display:flex;align-items:center;gap:8px;background:rgba(0,0,0,.25);
+      border:1px solid rgba(46,204,113,.25);border-radius:4px;padding:6px 10px;
+    }
+    .stack-tracker-name{font-size:.82em;color:#7de8a8;min-width:80px;font-family:'Cinzel',serif;letter-spacing:.5px;}
+    .stack-tracker-val{font-size:1.05em;font-weight:bold;color:#2ecc71;min-width:28px;text-align:center;}
+    .stack-tracker-max{font-size:.75em;color:rgba(46,204,113,.45);}
+    .stack-btn-sm{padding:2px 8px;font-size:.8em;border-width:1px;min-width:28px;text-align:center;}
+    .stack-btn-plus{background:rgba(46,204,113,.15);border-color:#2ecc71;color:#7de8a8;}
+    .stack-btn-plus:hover{background:rgba(46,204,113,.3);}
+    .stack-btn-minus{background:rgba(192,57,43,.15);border-color:#c0392b;color:#e87a6a;}
+    .stack-btn-minus:hover{background:rgba(192,57,43,.3);}
+    .stack-btn-remove{background:rgba(0,0,0,.2);border-color:rgba(139,111,71,.3);color:var(--text-dim);padding:2px 7px;font-size:.75em;border-width:1px;}
+    .stack-btn-remove:hover{border-color:#c0392b;color:#e87a6a;}
+    .stack-bar-wrap{flex:1;height:5px;background:rgba(0,0,0,.4);border-radius:3px;overflow:hidden;}
+    .stack-bar{height:100%;border-radius:3px;background:linear-gradient(90deg,#1a8a4a,#2ecc71);transition:width .3s;}
 
     /* ---- HEALTH INLINE ---- */
     .inline-input{margin-left:8px;width:70px;}
@@ -462,11 +516,48 @@
   </div>
 </div>
 
+<!-- STACK TRACKER MODAL -->
+<div id="stackModal" class="modal">
+  <div class="modal-content" style="width:440px;">
+    <div class="modal-header-band">
+      <span class="modal-eyebrow">Unit Tracking</span>
+      <h3 style="margin:0;">📊 Stack Trackers</h3>
+    </div>
+    <div id="stackList" style="margin-bottom:12px;"></div>
+    <hr style="border-color:#5a4a35;margin:12px 0;"/>
+    <div class="modal-section-label">Add New Tracker</div>
+    <div class="modal-field-row" style="margin-bottom:10px;">
+      <div class="modal-field" style="flex:2;">
+        <label>Name</label>
+        <input type="text" id="stackName" placeholder="e.g. Heat, Ammo, Charge" class="modal-full-input"/>
+      </div>
+      <div class="modal-field">
+        <label>Start Value</label>
+        <input type="number" id="stackValue" value="0" min="0" style="width:70px;"/>
+      </div>
+      <div class="modal-field">
+        <label>Max (optional)</label>
+        <input type="number" id="stackMax" placeholder="—" min="1" style="width:70px;"/>
+      </div>
+    </div>
+    <div class="modal-btns">
+      <button onclick="addStackTracker()" class="btn-stack">📊 Add Tracker</button>
+      <button onclick="closeModal('stackModal')">Close</button>
+    </div>
+  </div>
+</div>
+
 <!-- HIT MODAL -->
 <div id="hitModal" class="modal">
   <div class="modal-content">
     <h3>💥 Record Hit</h3>
     <p style="color:var(--gold-dim);font-size:.9em;margin-bottom:12px;">Log that this mini was hit (AOE, Pierce, etc.)</p>
+    <!-- Squad member picker — only shown for squads -->
+    <div id="hitSquadSection" style="display:none;margin-bottom:12px;">
+      <div class="modal-section-label">Which Member Was Hit?</div>
+      <select id="hitSquadMember" class="modal-full-input" style="margin-bottom:8px;"></select>
+      <div style="font-size:.75em;color:rgba(212,175,55,.4);">Select a member, or leave on "Whole Squad" to split damage evenly / log only</div>
+    </div>
     <div class="modal-row">
       <label>Damage taken</label>
       <input type="number" id="hitDamage" placeholder="Amount" min="0"/>
@@ -541,10 +632,11 @@
     <div class="modal-field-row">
       <div class="modal-field" style="flex:1;">
         <label>Unit Type</label>
-        <select id="addMiniType" class="modal-full-input">
+        <select id="addMiniType" class="modal-full-input" onchange="toggleAddSquadFields()">
           <option value="unit">⚔ Unit</option>
           <option value="vehicle">🚗 Vehicle</option>
           <option value="stationary">🗼 Stationary Support</option>
+          <option value="squad">👥 Squad</option>
         </select>
       </div>
       <div class="modal-field" style="flex:1;">
@@ -557,6 +649,13 @@
       </div>
     </div>
 
+    <div id="addSquadFields" style="display:none;">
+      <div class="modal-section-label">Squad Details</div>
+      <div class="modal-field-row">
+        <div class="modal-field"><label>Members</label><input type="number" id="addSquadCount" min="1" max="20" value="4" class="modal-full-input"/></div>
+        <div class="modal-field"><label>HP per Member</label><input type="number" id="addSquadMemberHp" min="1" value="30" class="modal-full-input"/></div>
+      </div>
+    </div>
     <div class="modal-btns" style="margin-top:18px;">
       <button onclick="confirmAddMini()" class="btn-heal" style="flex:1;">➕ Add Mini</button>
       <button onclick="closeModal('addMiniModal')" style="flex:1;">Cancel</button>
@@ -594,7 +693,16 @@
 <div id="reviveModal" class="modal">
   <div class="modal-content">
     <h3 id="reviveModalTitle">Revive Mini</h3>
-    <div class="modal-row"><label>HP to restore</label><input type="number" id="reviveHP" placeholder="50" min="1"/></div>
+    <!-- Normal mini revive -->
+    <div id="reviveNormalSection">
+      <div class="modal-row"><label>HP to restore</label><input type="number" id="reviveHP" placeholder="50" min="1"/></div>
+    </div>
+    <!-- Squad revive -->
+    <div id="reviveSquadSection" style="display:none;">
+      <div class="modal-section-label">Revive Member</div>
+      <select id="reviveSquadMember" class="modal-full-input" style="margin-bottom:10px;"></select>
+      <div class="modal-row"><label>HP to restore to member</label><input type="number" id="reviveSquadHP" placeholder="e.g. 20" min="1"/></div>
+    </div>
     <div class="modal-btns">
       <button onclick="confirmRevive()">Confirm</button>
       <button onclick="closeModal('reviveModal')">Cancel</button>
@@ -695,6 +803,7 @@ function unitTypeBadge(type) {
   if (!type || type === 'unit') return '<span class="unit-type-badge unit-badge-unit">UNIT</span>';
   if (type === 'vehicle') return '<span class="unit-type-badge unit-badge-vehicle">VEHICLE</span>';
   if (type === 'stationary') return '<span class="unit-type-badge unit-badge-stationary">SUPPORT</span>';
+  if (type === 'squad') return '<span class="unit-type-badge unit-badge-squad">SQUAD</span>';
   return '';
 }
 
@@ -718,10 +827,11 @@ function startMiniSetup() {
   for (let i = 0; i < count; i++) {
     const div = document.createElement("div"); div.id = `player-setup-${i}`;
     div.className = "setup-player-card";
+    const autoTeamVal = teamCount > 0 ? (i % teamCount) + 1 : null;
     let teamOpts = "";
     if (teamCount > 0) {
       teamOpts = `<div class="setup-fld"><label>Team</label><select id='team-${i}'>`;
-      for (let t = 1; t <= teamCount; t++) teamOpts += `<option value='${t}'>Team ${t}</option>`;
+      for (let t = 1; t <= teamCount; t++) teamOpts += `<option value='${t}' ${autoTeamVal===t?'selected':''}>Team ${t}</option>`;
       teamOpts += `</select></div>`;
     }
     div.innerHTML = `
@@ -755,7 +865,8 @@ function startMiniSetup() {
         <div id='minis-${i}'></div>
       </div>`;
     container.appendChild(div);
-    players.push({ id: i, name: `Player ${i + 1}`, team: teamCount > 0 ? 1 : null, partyLeader: "", minis: [], done: false });
+    const autoTeam = teamCount > 0 ? (i % teamCount) + 1 : null;
+    players.push({ id: i, name: `Player ${i + 1}`, team: autoTeam, partyLeader: "", minis: [], done: false });
   }
   const back = document.createElement("button"); back.textContent = "← Back to Main Menu";
   back.style.cssText = "margin-top:20px;opacity:.7;font-size:.85em;"; back.onclick = resetToMainMenu; container.appendChild(back);
@@ -777,10 +888,11 @@ function setupMinis(pIdx) {
         <div class="setup-fields-row">
           <div class="setup-fld" style="flex:2;"><label>Name</label><input type='text' id='miniName-${pIdx}-${i}' required placeholder='Mini name'/></div>
           <div class="setup-fld"><label>Max HP</label><input type='number' id='miniHp-${pIdx}-${i}' min='1' value='100' required style='width:80px;'/></div>
-          <div class="setup-fld"><label>Unit Type</label><select id='miniType-${pIdx}-${i}'>
+          <div class="setup-fld"><label>Unit Type</label><select id='miniType-${pIdx}-${i}' onchange='toggleSquadFields(${pIdx},${i})'>
             <option value='unit'>Unit</option>
             <option value='vehicle'>Vehicle</option>
             <option value='stationary'>Stationary</option>
+            <option value='squad'>Squad</option>
           </select></div>
           <div class="setup-fld"><label>Deployment</label><select id='deploy-${pIdx}-${i}' required>
             <option value=''>Select</option>
@@ -788,6 +900,13 @@ function setupMinis(pIdx) {
             <option value='deepstrike'>Deepstrike (Turn 2+)</option>
             <option value='ambush'>Ambush (Manual)</option>
           </select></div>
+        </div>
+        <div id='squadFields-${pIdx}-${i}' style='display:none;margin-top:10px;padding-top:10px;border-top:1px solid rgba(139,111,71,.2);'>
+          <div class='setup-fields-row'>
+            <div class='setup-fld'><label>Squad Members</label><input type='number' id='squadCount-${pIdx}-${i}' min='1' max='20' value='4' style='width:80px;'/></div>
+            <div class='setup-fld' style='flex:2;'><label>HP per Member</label><input type='number' id='squadMemberHp-${pIdx}-${i}' min='1' value='30' style='width:80px;'/></div>
+          </div>
+          <div style='font-size:.75em;color:rgba(212,175,55,.4);margin-top:4px;'>Each member tracked individually — squad acts as one unit</div>
         </div>
       </div>`;
   }
@@ -798,6 +917,12 @@ function finalizePlayer(pIdx, count) {
   if (teamCount > 0) {
     const ts = safeGetElement(`team-${pIdx}`);
     if (ts) players[pIdx].team = parseInt(ts.value);
+  }
+  // Apply team class to setup card
+  const setupCard = safeGetElement(`player-setup-${pIdx}`);
+  if (setupCard && players[pIdx].team) {
+    setupCard.classList.remove('team-1','team-2');
+    setupCard.classList.add(`team-${players[pIdx].team}`);
   }
   const leaderName = (safeGetElement(`partyLeader-${pIdx}`)?.value || "").trim();
   const leaderHp = parseInt(safeGetElement(`partyLeaderHp-${pIdx}`)?.value) || 100;
@@ -816,9 +941,20 @@ function finalizePlayer(pIdx, count) {
     const unitType = safeGetValue(`miniType-${pIdx}-${i}`) || "unit";
     if (!name) { customAlert(`Enter a name for Mini ${i + 1} of ${players[pIdx].name}`); return; }
     if (!deploy) { customAlert(`Select deployment for Mini ${i + 1}`); return; }
-    newMinis.push({ name, hp, maxHp: hp, unitType, statusEffects: [], cooldowns: [], done: false,
-      deployment: deploy, deployedTurn: deploy === 'normal' ? 1 : (deploy === 'deepstrike' ? 2 : 1),
-      defeated: false, revived: false, resurrected: false, ambushDeployed: deploy !== 'ambush', isLeader: false });
+    if (unitType === 'squad') {
+      const memberCount = parseInt(safeGetElement(`squadCount-${pIdx}-${i}`)?.value) || 4;
+      const memberHp = parseInt(safeGetElement(`squadMemberHp-${pIdx}-${i}`)?.value) || 30;
+      const members = [];
+      for (let s = 0; s < memberCount; s++) members.push({ name: `Member ${s+1}`, hp: memberHp, maxHp: memberHp, alive: true });
+      newMinis.push({ name, hp: memberCount * memberHp, maxHp: memberCount * memberHp, unitType: 'squad',
+        squadMembers: members, statusEffects: [], cooldowns: [], done: false,
+        deployment: deploy, deployedTurn: deploy === 'normal' ? 1 : (deploy === 'deepstrike' ? 2 : 1),
+        defeated: false, revived: false, resurrected: false, ambushDeployed: deploy !== 'ambush', isLeader: false });
+    } else {
+      newMinis.push({ name, hp, maxHp: hp, unitType, statusEffects: [], cooldowns: [], done: false,
+        deployment: deploy, deployedTurn: deploy === 'normal' ? 1 : (deploy === 'deepstrike' ? 2 : 1),
+        defeated: false, revived: false, resurrected: false, ambushDeployed: deploy !== 'ambush', isLeader: false });
+    }
   }
   players[pIdx].minis = newMinis;
   setupLocked[pIdx] = true;
@@ -911,11 +1047,44 @@ function renderGame(shouldScroll = false) {
   if (ti) ti.innerHTML = `<strong>TURN ${gameTurn}</strong><br/>${curP ? curP.name + "'s Turn" : ""}`;
 
   players.forEach((p, pIdx) => {
-    const playerDiv = document.createElement("div");
     const isActivePlayer = pIdx === currentPlayer;
-    const teamLabel = teamCount > 0 && p.team ? ` <span style="font-size:.7em;color:var(--gold-dim);">(Team ${p.team})</span>` : "";
-    playerDiv.innerHTML = `<h2 style="${isActivePlayer?'color:var(--gold-light);':''}">${p.name}${teamLabel}${isActivePlayer?' <span style="font-size:.65em;color:#ffd700;">▶ ACTIVE</span>':''}</h2>`;
-    if (!p.minis || p.minis.length === 0) { playerDiv.innerHTML += `<em>No minis</em>`; container.appendChild(playerDiv); return; }
+    const tNum = p.team || 0;
+    const tClass = tNum === 1 ? 'player-section-t1' : tNum === 2 ? 'player-section-t2' : '';
+    const tBadge = tNum ? `<span class="team-badge-${tNum}">TEAM ${tNum}</span>` : '';
+    const activeStrip = isActivePlayer ? `<div class="player-active-strip" style="background:${tNum===2?'var(--t2)':tNum===1?'var(--t1)':'var(--gold)'}"></div>` : '';
+    const aliveCount = (p.minis||[]).filter(m=>!m.defeated).length;
+    const totalCount = (p.minis||[]).length;
+    const summaryText = `${aliveCount}/${totalCount} units`;
+
+    const playerDiv = document.createElement("div");
+    playerDiv.className = `player-section ${tClass}`;
+    // Active players start expanded, others start collapsed
+    if (!isActivePlayer) playerDiv.classList.add('collapsed');
+    playerDiv.id = `player-section-${pIdx}`;
+
+    const headerDiv = document.createElement("div");
+    headerDiv.className = "player-section-header";
+    headerDiv.innerHTML = `
+      ${activeStrip}
+      <div style="display:flex;align-items:center;gap:10px;flex:1;min-width:0;">
+        <div>
+          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+            <span style="font-family:'Cinzel',serif;font-size:1.05em;font-weight:700;color:${isActivePlayer?(tNum===2?'#e87a6a':tNum===1?'#6ab4e8':'var(--gold-light)'):'var(--gold-dim)'};">${p.name}</span>
+            ${tBadge}
+            ${isActivePlayer ? '<span style="font-family:Cinzel,serif;font-size:.65em;color:#ffd700;letter-spacing:2px;">▶ ACTIVE</span>' : ''}
+          </div>
+          <div style="font-size:.75em;color:rgba(212,175,55,.4);margin-top:2px;">${summaryText}${p.minis.some(m=>m.activeDone&&!m.defeated)?' · some done':''}</div>
+        </div>
+      </div>
+      <span class="player-collapse-icon">▼</span>`;
+    headerDiv.onclick = () => {
+      playerDiv.classList.toggle('collapsed');
+    };
+
+    const bodyDiv = document.createElement("div");
+    bodyDiv.className = "player-section-body";
+
+    if (!p.minis || p.minis.length === 0) { bodyDiv.innerHTML = `<em style="color:var(--text-dim);">No minis in this party.</em>`; playerDiv.appendChild(headerDiv); playerDiv.appendChild(bodyDiv); container.appendChild(playerDiv); return; }
 
     p.minis.forEach((m, mIdx) => {
       const miniDiv = document.createElement("div"); miniDiv.id = `mini-${pIdx}-${mIdx}`;
@@ -923,18 +1092,26 @@ function renderGame(shouldScroll = false) {
         miniDiv.className = "mini ambush-hidden";
         miniDiv.innerHTML = `<strong>${m.name}</strong> <em style="color:var(--gold-dim);">— Hidden in Ambush</em>
           <div style="margin-top:10px;"><button onclick="deployAmbush(${pIdx},${mIdx})">Deploy Ambush</button></div>`;
-        playerDiv.appendChild(miniDiv); return;
+        bodyDiv.appendChild(miniDiv); return;
       }
       let cls = "mini";
       if (m.isLeader) cls += " party-leader-mini";
       if (isActivePlayer && !m.defeated) cls += " active-mini";
       if (m.defeated) cls += " defeated-mini";
+      // Auto-mark squad defeated if all members dead
+      if (m.unitType === 'squad' && m.squadMembers && !m.squadMembers.some(s => s.alive)) m.defeated = true;
       if (isActivePlayer && m.activeDone && !m.defeated) cls += " mini-done";
       miniDiv.className = cls;
 
-      // HP bar
-      const hpPct = m.maxHp > 0 ? Math.max(0, Math.min(100, (m.hp / m.maxHp) * 100)) : 0;
-      const barColor = hpBarColor(m.hp, m.maxHp);
+      // HP bar — for squads derive from alive members
+      let hpForBar = m.hp, maxHpForBar = m.maxHp;
+      if (m.unitType === 'squad' && m.squadMembers) {
+        const alive = m.squadMembers.filter(s => s.alive);
+        hpForBar = alive.reduce((a, s) => a + s.hp, 0);
+        maxHpForBar = m.squadMembers.reduce((a, s) => a + s.maxHp, 0);
+      }
+      const hpPct = maxHpForBar > 0 ? Math.max(0, Math.min(100, (hpForBar / maxHpForBar) * 100)) : 0;
+      const barColor = hpBarColor(hpForBar, maxHpForBar);
 
       // Status tags
       let statusTags = "";
@@ -951,6 +1128,24 @@ function renderGame(shouldScroll = false) {
       if (m.deployment === 'deepstrike' && gameTurn < m.deployedTurn) deployNote = `<div class="status">🚀 Deepstrike — Arrives Turn ${m.deployedTurn}</div>`;
       if (m.deployment === 'ambush' && m.ambushDeployed) deployNote = `<div class="status">🎯 Ambush Deployed</div>`;
 
+      // Squad member rows
+      let squadHTML = '';
+      if (m.unitType === 'squad' && m.squadMembers) {
+        const aliveMembers = m.squadMembers.filter(s => s.alive);
+        const totalMembers = m.squadMembers.length;
+        squadHTML = `<div class="squad-members-wrap">`;
+        m.squadMembers.forEach((s, sIdx) => {
+          const sPct = Math.max(0, Math.min(100, (s.hp / s.maxHp) * 100));
+          const sCol = hpBarColor(s.hp, s.maxHp);
+          squadHTML += `<div class="squad-member-row${s.alive?'':' member-dead'}">
+            <span class="squad-member-name">${s.alive ? '🟢' : '☠'} ${s.name}</span>
+            <div class="squad-member-bar-wrap"><div class="squad-member-bar" style="width:${sPct}%;background:${sCol};"></div></div>
+            <span class="squad-member-hp">${s.alive ? s.hp+'/'+s.maxHp : 'KIA'}</span>
+            ${s.alive && !m.defeated ? `<button class="btn-kill-member" onclick="killSquadMember(${pIdx},${mIdx},${sIdx})">✕ KIA</button>` : ''}
+          </div>`;
+        });
+        squadHTML += `</div><div style="font-size:.75em;color:rgba(212,175,55,.45);margin-top:5px;">${aliveMembers.length}/${totalMembers} members remaining</div>`;
+      }
       miniDiv.innerHTML = `
         <div class="mini-name-row">
           <strong>${m.isLeader ? '👑 ' + m.name + ' 👑' : m.name}</strong>
@@ -959,9 +1154,26 @@ function renderGame(shouldScroll = false) {
           ${m.revived ? '<span style="color:#f0d060;font-size:.8em;">🌟 Revived</span>' : ''}
           ${m.resurrected ? '<span style="color:#c080e0;font-size:.8em;">✨ Resurrected</span>' : ''}
         </div>
-        <div>HP: <strong>${m.hp}/${m.maxHp}</strong></div>
+        ${m.unitType === 'squad' && m.squadMembers
+          ? `<div style="font-size:.82em;color:var(--gold-dim);">Squad HP: <strong>${m.squadMembers.filter(s=>s.alive).reduce((a,s)=>a+s.hp,0)}</strong> total</div>`
+          : `<div>HP: <strong>${m.hp}/${m.maxHp}</strong></div>`}
         <div class="hp-bar-wrap"><div class="hp-bar" style="width:${hpPct}%;background:${barColor};"></div></div>
+        ${squadHTML}
         ${statusTags ? `<div style="margin-top:4px;">${statusTags}</div>` : ''}
+        ${(m.stackTrackers && m.stackTrackers.length > 0) ? `
+          <div class="stack-tracker-wrap">
+            ${m.stackTrackers.map((st, stIdx) => {
+              const pct = st.max ? Math.min(100, Math.round((st.value / st.max) * 100)) : 0;
+              return `<div class="stack-tracker-row">
+                <span class="stack-tracker-name">${st.name}</span>
+                <button class="stack-btn-sm stack-btn-minus" onclick="adjustStack(${pIdx},${mIdx},${stIdx},-1)">−</button>
+                <span class="stack-tracker-val">${st.value}</span>
+                <button class="stack-btn-sm stack-btn-plus" onclick="adjustStack(${pIdx},${mIdx},${stIdx},+1)">+</button>
+                ${st.max ? `<div class="stack-bar-wrap"><div class="stack-bar" style="width:${pct}%;"></div></div><span class="stack-tracker-max">/${st.max}</span>` : ''}
+                <button class="stack-btn-remove" onclick="removeStack(${pIdx},${mIdx},${stIdx})">✕</button>
+              </div>`;
+            }).join('')}
+          </div>` : ''}
         ${deployNote}
       `;
 
@@ -979,6 +1191,7 @@ function renderGame(shouldScroll = false) {
             <button class="btn-cd section-btn" onclick="openCooldownModal(${pIdx},${mIdx})">🔵 CD</button>
             <button class="btn-heal section-btn" onclick="openHealModal(${pIdx},${mIdx})">💚 Heal</button>
             <button class="btn-damage section-btn" onclick="openSelfDamageModal(${pIdx},${mIdx})">🛡 Take Dmg</button>
+            <button class="btn-stack section-btn" onclick="openStackModal(${pIdx},${mIdx})">📊 Stacks</button>
             <button class="section-btn" style="${doneStyle}" onclick="toggleMiniDone(${pIdx},${mIdx})">${doneLabel}</button>
           `;
         } else {
@@ -988,6 +1201,7 @@ function renderGame(shouldScroll = false) {
             <button class="btn-status section-btn" onclick="openStatusModal(${pIdx},${mIdx})">⚡ Status</button>
             <button class="btn-heal section-btn" onclick="openHealModal(${pIdx},${mIdx})">💚 Heal</button>
             <button class="btn-damage section-btn" onclick="openSelfDamageModal(${pIdx},${mIdx})">🛡 Take Dmg</button>
+            <button class="btn-stack section-btn" onclick="openStackModal(${pIdx},${mIdx})">📊 Stacks</button>
           `;
         }
       }
@@ -995,19 +1209,21 @@ function renderGame(shouldScroll = false) {
         if (!m.revived) ctrl.innerHTML += `<button class="btn-revive section-btn" onclick="openReviveModal(${pIdx},${mIdx},'revive')">🌟 Revive</button>`;
         if (!m.resurrected) ctrl.innerHTML += `<button class="btn-resurrect section-btn" onclick="openReviveModal(${pIdx},${mIdx},'resurrect')">✨ Resurrect</button>`;
       }
-      miniDiv.appendChild(ctrl); playerDiv.appendChild(miniDiv);
+      miniDiv.appendChild(ctrl); bodyDiv.appendChild(miniDiv);
     });
 
     // Player buttons
-    const pbRow = document.createElement("div"); pbRow.style.marginTop = "8px";
+    const pbRow = document.createElement("div"); pbRow.style.marginTop = "10px";
     pbRow.innerHTML = `
       <button class="section-btn" onclick="openAddMiniModal(${pIdx})">➕ Add Mini</button>
       <button class="section-btn" onclick="openEditPartyModal(${pIdx})">✏ Edit Party</button>
     `;
     if (gameMode === 'controlPoint') {
-      pbRow.innerHTML += `<button id="capture-dec-btn" class="section-btn" onclick="openCpDecModal(${pIdx})" style="background:linear-gradient(135deg,#5c2020,#3d1414);border-color:#c0392b;">🎯 Decrease CP</button>`;
+      pbRow.innerHTML += `<button class="section-btn" onclick="openCpDecModal(${pIdx})" style="background:linear-gradient(135deg,#5c2020,#3d1414);border-color:#c0392b;">🎯 Decrease CP</button>`;
     }
-    playerDiv.appendChild(pbRow);
+    bodyDiv.appendChild(pbRow);
+    playerDiv.appendChild(headerDiv);
+    playerDiv.appendChild(bodyDiv);
     container.appendChild(playerDiv);
   });
 
@@ -1043,6 +1259,16 @@ function openStatusModal(pIdx, mIdx) {
   const dcEl = safeGetElement("statusDealsCheck"); if (dcEl) { dcEl.checked = false; toggleStatusDmg(); }
   const disEl = safeGetElement("statusDisable"); if (disEl) disEl.checked = false;
   safeGetElement("statusModal").style.display = "flex";
+}
+
+function toggleSquadFields(pIdx, i) {
+  const typeEl = safeGetElement(`miniType-${pIdx}-${i}`);
+  const fieldsEl = safeGetElement(`squadFields-${pIdx}-${i}`);
+  if (!typeEl || !fieldsEl) return;
+  fieldsEl.style.display = typeEl.value === 'squad' ? 'block' : 'none';
+  // When squad selected, hide the shared HP field and replace label
+  const hpEl = safeGetElement(`miniHp-${pIdx}-${i}`);
+  if (hpEl) hpEl.parentElement.style.display = typeEl.value === 'squad' ? 'none' : 'flex';
 }
 
 function toggleStatusDmg() {
@@ -1100,24 +1326,76 @@ function openHitModal(pIdx, mIdx) {
   actionMini = { pIdx, mIdx };
   const hd = safeGetElement("hitDamage"); if (hd) hd.value = "";
   const hr = safeGetElement("hitReason"); if (hr) hr.value = "";
+  const mini = players[pIdx].minis[mIdx];
+  const squadSection = safeGetElement("hitSquadSection");
+  const memberSel = safeGetElement("hitSquadMember");
+  if (mini.unitType === 'squad' && mini.squadMembers) {
+    squadSection.style.display = "block";
+    memberSel.innerHTML = `<option value="whole">Whole Squad (log only)</option>`;
+    mini.squadMembers.forEach((s, sIdx) => {
+      if (!s.alive) return;
+      const o = document.createElement("option"); o.value = sIdx;
+      o.textContent = `${s.name} (${s.hp}/${s.maxHp} HP)`;
+      memberSel.appendChild(o);
+    });
+  } else {
+    squadSection.style.display = "none";
+  }
   safeGetElement("hitModal").style.display = "flex";
 }
 
 function confirmHit() {
   const { pIdx, mIdx } = actionMini;
-  const dmg = parseInt(safeGetValue("hitDamage"));
+  const dmg = parseInt(safeGetValue("hitDamage")) || 0;
   const reason = safeGetValue("hitReason").trim();
   if (!reason) { customAlert("Enter a reason / notes."); return; }
   const mini = players[pIdx].minis[mIdx];
-  let msg = `${players[pIdx].name}'s ${mini.name} was hit (${reason})`;
-  if (dmg > 0) {
-    mini.hp = Math.max(0, mini.hp - dmg);
-    if (mini.hp === 0) { mini.defeated = true; }
-    msg += ` for ${dmg} damage (${mini.hp}/${mini.maxHp} HP)`;
+  let msg = "";
+
+  if (mini.unitType === 'squad' && mini.squadMembers) {
+    const memberSel = safeGetElement("hitSquadMember");
+    const memberVal = memberSel ? memberSel.value : "whole";
+    if (memberVal === "whole") {
+      // Log only — no specific member damage
+      msg = `${players[pIdx].name}'s ${mini.name} squad was hit (${reason})${dmg ? ' for ' + dmg + ' damage (logged only)' : ''}`;
+    } else {
+      const sIdx = parseInt(memberVal);
+      const member = mini.squadMembers[sIdx];
+      if (dmg > 0) {
+        member.hp = Math.max(0, member.hp - dmg);
+        if (member.hp === 0) {
+          member.alive = false;
+          msg = `💥 ${players[pIdx].name}'s ${mini.name} — ${member.name} was hit for ${dmg} dmg and killed! (${reason})`;
+          addHistory(msg, 'hit');
+          const anyAlive = mini.squadMembers.some(s => s.alive);
+          if (!anyAlive) {
+            mini.defeated = true;
+            addHistory(`☠ ${mini.name} squad fully wiped!`, 'attack');
+            closeModal("hitModal"); renderGame();
+            customAlert(`${mini.name} has been wiped out!`); return;
+          }
+          closeModal("hitModal"); renderGame(); return;
+        } else {
+          msg = `💥 ${players[pIdx].name}'s ${mini.name} — ${member.name} hit for ${dmg} dmg → ${member.hp}/${member.maxHp} HP (${reason})`;
+        }
+      } else {
+        msg = `💥 ${players[pIdx].name}'s ${mini.name} — ${member.name} was hit (${reason})`;
+      }
+    }
+  } else {
+    msg = `${players[pIdx].name}'s ${mini.name} was hit (${reason})`;
+    if (dmg > 0) {
+      mini.hp = Math.max(0, mini.hp - dmg);
+      if (mini.hp === 0) mini.defeated = true;
+      msg += ` for ${dmg} damage → ${mini.hp}/${mini.maxHp} HP`;
+    }
+    if (mini.defeated) {
+      addHistory(msg, 'hit'); closeModal("hitModal"); renderGame();
+      customAlert(`${mini.name} has been defeated!`); return;
+    }
   }
   addHistory(msg, 'hit');
   closeModal("hitModal"); renderGame();
-  if (mini.defeated) customAlert(`${mini.name} has been defeated!`);
 }
 
 function openHealModal(pIdx, mIdx) {
@@ -1133,8 +1411,17 @@ function confirmHeal() {
   const notes = safeGetValue("healNotes").trim();
   if (!amount || amount < 1) { customAlert("Enter a valid heal amount."); return; }
   const mini = players[pIdx].minis[mIdx];
-  mini.hp = Math.min(mini.maxHp, mini.hp + amount);
-  addHistory(`💚 ${players[pIdx].name}'s ${mini.name} healed +${amount} HP${notes?' ('+notes+')':''} → ${mini.hp}/${mini.maxHp}`, 'heal');
+  if (mini.unitType === 'squad' && mini.squadMembers) {
+    // Heal the most-wounded alive member automatically
+    const alive = mini.squadMembers.filter(s => s.alive).sort((a,b) => (a.hp/a.maxHp)-(b.hp/b.maxHp));
+    if (alive.length === 0) { customAlert("No alive members to heal."); return; }
+    const target = alive[0];
+    target.hp = Math.min(target.maxHp, target.hp + amount);
+    addHistory(`💚 ${players[pIdx].name}'s ${mini.name} — ${target.name} healed +${amount} HP → ${target.hp}/${target.maxHp}${notes?' ('+notes+')':''}`, 'heal');
+  } else {
+    mini.hp = Math.min(mini.maxHp, mini.hp + amount);
+    addHistory(`💚 ${players[pIdx].name}'s ${mini.name} healed +${amount} HP${notes?' ('+notes+')':''} → ${mini.hp}/${mini.maxHp}`, 'heal');
+  }
   closeModal("healModal"); renderGame();
 }
 
@@ -1240,24 +1527,65 @@ function confirmAttack() {
 // ================================================================
 function openReviveModal(pIdx, mIdx, mode) {
   revivingMini = { pIdx, mIdx }; reviveMode = mode;
+  const mini = players[pIdx].minis[mIdx];
   const title = safeGetElement("reviveModalTitle");
-  if (title) title.innerText = mode === "revive" ? "Revive Mini" : "Resurrect Mini (Full HP)";
-  const hp = safeGetElement("reviveHP"); if (hp) hp.value = "";
+  const normalSec = safeGetElement("reviveNormalSection");
+  const squadSec = safeGetElement("reviveSquadSection");
+  const memberSel = safeGetElement("reviveSquadMember");
+  if (mini.unitType === 'squad' && mini.squadMembers) {
+    if (title) title.innerText = mode === "resurrect" ? "Resurrect Squad Member (Full HP)" : "Revive Squad Member";
+    normalSec.style.display = "none"; squadSec.style.display = "block";
+    memberSel.innerHTML = "";
+    mini.squadMembers.forEach((s, sIdx) => {
+      if (s.alive) return; // only show dead members
+      const o = document.createElement("option"); o.value = sIdx;
+      o.textContent = `${s.name} (KIA)`;
+      memberSel.appendChild(o);
+    });
+    if (memberSel.options.length === 0) {
+      customAlert("All squad members are already alive!"); return;
+    }
+    safeGetElement("reviveSquadHP").value = "";
+  } else {
+    if (title) title.innerText = mode === "revive" ? "Revive Mini" : "Resurrect Mini (Full HP)";
+    normalSec.style.display = "block"; squadSec.style.display = "none";
+    const hp = safeGetElement("reviveHP"); if (hp) hp.value = "";
+  }
   safeGetElement("reviveModal").style.display = "flex";
 }
 function confirmRevive() {
   const { pIdx, mIdx } = revivingMini;
   const mini = players[pIdx].minis[mIdx];
-  if (reviveMode === "resurrect") {
-    mini.hp = mini.maxHp; mini.defeated = false; mini.resurrected = true; mini.done = false;
-    addHistory(`✨ ${players[pIdx].name}'s ${mini.name} was Resurrected at full HP`, 'heal');
-    customAlert(`${mini.name} resurrected at full HP!`);
+
+  if (mini.unitType === 'squad' && mini.squadMembers) {
+    const sIdx = parseInt(safeGetElement("reviveSquadMember")?.value);
+    const member = mini.squadMembers[sIdx];
+    if (!member) { customAlert("Select a member."); return; }
+    if (reviveMode === "resurrect") {
+      member.hp = member.maxHp; member.alive = true;
+      addHistory(`✨ ${players[pIdx].name}'s ${mini.name} — ${member.name} resurrected at full HP`, 'heal');
+      customAlert(`${member.name} resurrected at full HP!`);
+    } else {
+      const hp = parseInt(safeGetValue("reviveSquadHP"));
+      if (!hp || hp < 1) { customAlert("Enter valid HP."); return; }
+      member.hp = Math.min(hp, member.maxHp); member.alive = true;
+      addHistory(`🌟 ${players[pIdx].name}'s ${mini.name} — ${member.name} revived with ${member.hp} HP`, 'heal');
+      customAlert(`${member.name} revived with ${member.hp} HP!`);
+    }
+    // If squad was defeated, un-defeat it since a member is back
+    mini.defeated = false;
   } else {
-    const hp = parseInt(safeGetValue("reviveHP"));
-    if (!hp || hp < 1) { customAlert("Enter valid HP."); return; }
-    mini.hp = Math.min(hp, mini.maxHp); mini.defeated = false; mini.revived = true; mini.done = false;
-    addHistory(`🌟 ${players[pIdx].name}'s ${mini.name} was Revived with ${mini.hp} HP`, 'heal');
-    customAlert(`${mini.name} revived with ${mini.hp} HP!`);
+    if (reviveMode === "resurrect") {
+      mini.hp = mini.maxHp; mini.defeated = false; mini.resurrected = true; mini.done = false;
+      addHistory(`✨ ${players[pIdx].name}'s ${mini.name} was Resurrected at full HP`, 'heal');
+      customAlert(`${mini.name} resurrected at full HP!`);
+    } else {
+      const hp = parseInt(safeGetValue("reviveHP"));
+      if (!hp || hp < 1) { customAlert("Enter valid HP."); return; }
+      mini.hp = Math.min(hp, mini.maxHp); mini.defeated = false; mini.revived = true; mini.done = false;
+      addHistory(`🌟 ${players[pIdx].name}'s ${mini.name} was Revived with ${mini.hp} HP`, 'heal');
+      customAlert(`${mini.name} revived with ${mini.hp} HP!`);
+    }
   }
   closeModal("reviveModal"); renderGame();
 }
@@ -1275,17 +1603,36 @@ function openAddMiniModal(pIdx) {
   const mh = safeGetElement("addMiniHP"); if (mh) mh.value = "100";
   safeGetElement("addMiniModal").style.display = "flex";
 }
+function toggleAddSquadFields() {
+  const t = safeGetValue("addMiniType");
+  const f = safeGetElement("addSquadFields");
+  const hpRow = safeGetElement("addMiniHP")?.closest('.modal-field');
+  if (f) f.style.display = t === 'squad' ? 'block' : 'none';
+  if (hpRow) hpRow.style.display = t === 'squad' ? 'none' : 'flex';
+}
+
 function confirmAddMini() {
   const pIdx = parseInt(safeGetValue("addMiniPlayer"));
   const name = safeGetValue("addMiniName").trim();
-  const hp = parseInt(safeGetValue("addMiniHP"));
   const deploy = safeGetValue("addMiniDeploy");
   const unitType = safeGetValue("addMiniType") || "unit";
   if (!name) { customAlert("Enter a mini name."); return; }
-  if (!hp || hp < 1) { customAlert("Enter valid HP."); return; }
-  players[pIdx].minis.push({ name, hp, maxHp: hp, unitType, statusEffects: [], cooldowns: [],
-    done: false, deployment: deploy, deployedTurn: deploy === 'normal' ? gameTurn : gameTurn + 1,
-    defeated: false, revived: false, resurrected: false, ambushDeployed: deploy !== 'ambush', isLeader: false });
+  if (unitType === 'squad') {
+    const memberCount = parseInt(safeGetValue("addSquadCount")) || 4;
+    const memberHp = parseInt(safeGetValue("addSquadMemberHp")) || 30;
+    const members = [];
+    for (let s = 0; s < memberCount; s++) members.push({ name: `Member ${s+1}`, hp: memberHp, maxHp: memberHp, alive: true });
+    players[pIdx].minis.push({ name, hp: memberCount*memberHp, maxHp: memberCount*memberHp, unitType: 'squad',
+      squadMembers: members, statusEffects: [], cooldowns: [], done: false,
+      deployment: deploy, deployedTurn: deploy === 'normal' ? gameTurn : gameTurn + 1,
+      defeated: false, revived: false, resurrected: false, ambushDeployed: deploy !== 'ambush', isLeader: false });
+  } else {
+    const hp = parseInt(safeGetValue("addMiniHP"));
+    if (!hp || hp < 1) { customAlert("Enter valid HP."); return; }
+    players[pIdx].minis.push({ name, hp, maxHp: hp, unitType, statusEffects: [], cooldowns: [],
+      done: false, deployment: deploy, deployedTurn: deploy === 'normal' ? gameTurn : gameTurn + 1,
+      defeated: false, revived: false, resurrected: false, ambushDeployed: deploy !== 'ambush', isLeader: false });
+  }
   closeModal("addMiniModal"); renderGame();
   customAlert(`${name} added to ${players[pIdx].name}'s party!`);
 }
@@ -1344,11 +1691,101 @@ function removeMini(pIdx, mIdx) {
 }
 
 // ================================================================
+// SQUAD MEMBER KIA
+// ================================================================
+function killSquadMember(pIdx, mIdx, sIdx) {
+  const mini = players[pIdx].minis[mIdx];
+  const member = mini.squadMembers[sIdx];
+  if (!member || !member.alive) return;
+  member.alive = false;
+  member.hp = 0;
+  addHistory(`☠ ${players[pIdx].name}'s ${mini.name}: ${member.name} was killed`, 'attack');
+  // Check if whole squad is wiped
+  const anyAlive = mini.squadMembers.some(s => s.alive);
+  if (!anyAlive) {
+    mini.defeated = true;
+    addHistory(`☠ ${players[pIdx].name}'s ${mini.name} squad has been wiped out!`, 'attack');
+    customAlert(`${mini.name} has been wiped out!`);
+  }
+  renderGame();
+}
+
+// ================================================================
 // MINI DONE TOGGLE
 // ================================================================
 function toggleMiniDone(pIdx, mIdx) {
   const m = players[pIdx].minis[mIdx];
   m.activeDone = !m.activeDone;
+  renderGame();
+}
+
+// ================================================================
+// STACK TRACKERS
+// ================================================================
+function openStackModal(pIdx, mIdx) {
+  actionMini = { pIdx, mIdx };
+  const mini = players[pIdx].minis[mIdx];
+  if (!mini.stackTrackers) mini.stackTrackers = [];
+  const list = safeGetElement("stackList"); list.innerHTML = "";
+  if (mini.stackTrackers.length === 0) {
+    list.innerHTML = "<em style='color:#888;font-size:.9em;'>No stack trackers yet.</em>";
+  } else {
+    mini.stackTrackers.forEach((st, stIdx) => {
+      const pct = st.max ? Math.min(100, Math.round((st.value/st.max)*100)) : null;
+      const div = document.createElement("div"); div.className = "status-list-item";
+      div.style.borderColor = "#2ecc71";
+      div.innerHTML = `
+        <div style="flex:1;">
+          <div style="font-family:'Cinzel',serif;font-size:.8em;color:#7de8a8;margin-bottom:4px;">${st.name}${st.max?' <span style="color:rgba(46,204,113,.4);">/ '+st.max+'</span>':''}</div>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <button class="stack-btn-sm stack-btn-minus" onclick="adjustStack(${pIdx},${mIdx},${stIdx},-1);openStackModal(${pIdx},${mIdx});">−</button>
+            <span style="font-size:1.1em;font-weight:bold;color:#2ecc71;min-width:30px;text-align:center;">${st.value}</span>
+            <button class="stack-btn-sm stack-btn-plus" onclick="adjustStack(${pIdx},${mIdx},${stIdx},+1);openStackModal(${pIdx},${mIdx});">+</button>
+            ${pct !== null ? `<div class="stack-bar-wrap" style="flex:1;"><div class="stack-bar" style="width:${pct}%;"></div></div>` : ''}
+          </div>
+        </div>
+        <button class="stack-btn-remove" onclick="removeStack(${pIdx},${mIdx},${stIdx});openStackModal(${pIdx},${mIdx});">✕ Remove</button>`;
+      list.appendChild(div);
+    });
+  }
+  // Clear inputs
+  const sn = safeGetElement("stackName"); if (sn) sn.value = "";
+  const sv = safeGetElement("stackValue"); if (sv) sv.value = "0";
+  const sm = safeGetElement("stackMax"); if (sm) sm.value = "";
+  safeGetElement("stackModal").style.display = "flex";
+}
+
+function addStackTracker() {
+  const { pIdx, mIdx } = actionMini;
+  const name = safeGetValue("stackName").trim();
+  const value = parseInt(safeGetValue("stackValue")) || 0;
+  const maxRaw = safeGetValue("stackMax").trim();
+  const max = maxRaw ? parseInt(maxRaw) : null;
+  if (!name) { customAlert("Enter a tracker name."); return; }
+  const mini = players[pIdx].minis[mIdx];
+  if (!mini.stackTrackers) mini.stackTrackers = [];
+  mini.stackTrackers.push({ name, value, max });
+  addHistory(`📊 ${players[pIdx].name}'s ${mini.name}: "${name}" tracker added (${value}${max?'/'+max:''})`, 'cd');
+  openStackModal(pIdx, mIdx); // refresh modal
+  renderGame();
+}
+
+function adjustStack(pIdx, mIdx, stIdx, delta) {
+  const mini = players[pIdx].minis[mIdx];
+  if (!mini.stackTrackers || !mini.stackTrackers[stIdx]) return;
+  const st = mini.stackTrackers[stIdx];
+  st.value = Math.max(0, st.value + delta);
+  if (st.max) st.value = Math.min(st.max, st.value);
+  addHistory(`📊 ${players[pIdx].name}'s ${mini.name}: ${st.name} → ${st.value}${st.max?'/'+st.max:''}`, 'cd');
+  renderGame();
+}
+
+function removeStack(pIdx, mIdx, stIdx) {
+  const mini = players[pIdx].minis[mIdx];
+  if (!mini.stackTrackers) return;
+  const name = mini.stackTrackers[stIdx].name;
+  mini.stackTrackers.splice(stIdx, 1);
+  addHistory(`📊 ${players[pIdx].name}'s ${mini.name}: "${name}" tracker removed`, '');
   renderGame();
 }
 
@@ -1402,7 +1839,9 @@ function nextTurn() {
     });
     // Decrement status effects
     m.statusEffects = (m.statusEffects || []).map(e => ({ ...e, duration: e.duration - 1 })).filter(e => e.duration > 0);
-    // Decrement cooldowns
+    // Decrement cooldowns (only on this mini's owner's turn)
+    const expiredCDs = (m.cooldowns || []).filter(cd => cd.turns - 1 <= 0);
+    expiredCDs.forEach(cd => addHistory(`🔵 ${curP.name}'s ${m.name}: "${cd.name}" cooldown is ready!`, 'cd'));
     m.cooldowns = (m.cooldowns || []).map(cd => ({ ...cd, turns: cd.turns - 1 })).filter(cd => cd.turns > 0);
   });
 
